@@ -2,7 +2,7 @@
 import produce from 'immer';
 
 export const initialState = {
-  currentStep: null,
+  currentStep: 'wdjfh',
   guidedTourState: {
     contentTypeBuilder: {
       create: false,
@@ -17,6 +17,7 @@ export const initialState = {
       success: false,
     },
   },
+  isActive: true,
   isGuidedTourVisible: false,
 };
 
@@ -29,6 +30,10 @@ const reducer = (state = initialState, action) =>
       }
       case 'SET_GUIDED_TOUR_VISIBILITY': {
         draftState.isGuidedTourVisible = action.value;
+        break;
+      }
+      case 'SET_IS_ACTIVE': {
+        draftState.isActive = action.value;
         break;
       }
       default: {
