@@ -9,10 +9,19 @@ const GuidedTour = ({ children }) => {
     initialState
   );
 
-  const setStep = step => {
+  const setCurrentStep = step => {
     dispatch({
       type: 'SET_CURRENT_STEP',
       step,
+    });
+  };
+
+  const setStepState = (section, step, value) => {
+    dispatch({
+      type: 'SET_STEP_STATE',
+      section,
+      step,
+      value
     });
   };
 
@@ -35,9 +44,10 @@ const GuidedTour = ({ children }) => {
       guidedTourState={guidedTourState}
       currentStep={currentStep}
       isActive={isActive}
-      setStep={setStep}
+      setCurrentStep={setCurrentStep}
       setGuidedTourVisibility={setGuidedTourVisibility}
       setIsActive={setIsActive}
+      setStepState={setStepState}
       isGuidedTourVisible={isGuidedTourVisible}
     >
       {children}

@@ -10,10 +10,11 @@ import GuidedTourContext from '../../contexts/GuidedTourContext';
 const GuidedTourProvider = ({
   children,
   currentStep,
-  setStep,
+  setCurrentStep,
   guidedTourState,
   setGuidedTourVisibility,
   setIsActive,
+  setStepState,
   isActive,
   isGuidedTourVisible,
 }) => {
@@ -22,7 +23,8 @@ const GuidedTourProvider = ({
       value={{
         currentStep,
         guidedTourState,
-        setStep,
+        setCurrentStep,
+        setStepState,
         isActive,
         setGuidedTourVisibility,
         setIsActive,
@@ -51,9 +53,10 @@ GuidedTourProvider.propTypes = {
   ).isRequired,
   isGuidedTourVisible: PropTypes.bool,
   isActive: PropTypes.bool,
-  setStep: PropTypes.func.isRequired,
+  setCurrentStep: PropTypes.func.isRequired,
   setGuidedTourVisibility: PropTypes.func.isRequired,
   setIsActive: PropTypes.func.isRequired,
+  setStepState: PropTypes.func.isRequired,
 };
 
 export default GuidedTourProvider;

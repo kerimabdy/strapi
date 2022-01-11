@@ -32,6 +32,7 @@ const layout = {
           defaultMessage: 'Build a Collection-type',
         },
         type: 'CLOSE',
+        nextStep: null,
       },
     },
     success: {
@@ -50,6 +51,7 @@ const layout = {
         },
         type: 'REDIRECT',
         target: '/content-manager',
+        nextStep: 'contentManager.create',
       },
     },
   },
@@ -84,6 +86,7 @@ const layout = {
           defaultMessage: 'Create sample content',
         },
         type: 'CLOSE',
+        nextStep: null,
       },
     },
     success: {
@@ -102,6 +105,7 @@ const layout = {
         },
         type: 'REDIRECT',
         target: '/settings/api-tokens',
+        nextStep: 'apiTokens.create',
       },
     },
   },
@@ -136,6 +140,7 @@ const layout = {
           defaultMessage: 'Create sample content',
         },
         type: 'CLOSE',
+        nextStep: null,
       },
     },
     success: {
@@ -154,6 +159,7 @@ const layout = {
         },
         type: 'REDIRECT',
         target: '/',
+        nextStep: null,
       },
     },
   },
