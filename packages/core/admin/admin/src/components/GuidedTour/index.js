@@ -4,7 +4,7 @@ import { GuidedTourProvider } from '@strapi/helper-plugin';
 import reducer, { initialState } from './reducer';
 
 const GuidedTour = ({ children }) => {
-  const [{ currentStep, guidedTourState, isGuidedTourVisible, isActive }, dispatch] = useReducer(
+  const [{ currentStep, guidedTourState, isGuidedTourVisible }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -32,21 +32,12 @@ const GuidedTour = ({ children }) => {
     });
   };
 
-  const setIsActive = value => {
-    dispatch({
-      type: 'SET_IS_ACTIVE',
-      value,
-    });
-  };
-
   return (
     <GuidedTourProvider
       guidedTourState={guidedTourState}
       currentStep={currentStep}
-      isActive={isActive}
       setCurrentStep={setCurrentStep}
       setGuidedTourVisibility={setGuidedTourVisibility}
-      setIsActive={setIsActive}
       setStepState={setStepState}
       isGuidedTourVisible={isGuidedTourVisible}
     >

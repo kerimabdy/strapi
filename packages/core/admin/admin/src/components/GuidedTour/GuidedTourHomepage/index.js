@@ -9,20 +9,14 @@ import StepperHomepage from '../Stepper/Homepage/StepperHomepage';
 import layout from '../layout';
 
 const GuidedTourHomepage = () => {
-  const { guidedTourState, setIsActive, setCurrentStep } = useGuidedTour();
+  const { guidedTourState } = useGuidedTour();
   const { formatMessage } = useIntl();
-
-  const handleOnClick = sectionName => {
-    setIsActive(true);
-    setCurrentStep(`${sectionName}.create`);
-  };
 
   const sections = Object.entries(layout).map(([key, val]) => ({
     key,
     title: val.home.title,
     content: (
       <LinkButton
-        onClick={() => handleOnClick(key)}
         to={val.home.cta.target}
         endIcon={<ArrowRight />}
       >

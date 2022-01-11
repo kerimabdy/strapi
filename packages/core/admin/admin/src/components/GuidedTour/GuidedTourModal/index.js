@@ -10,8 +10,8 @@ import { Button } from '@strapi/design-system/Button';
 import { useGuidedTour } from '@strapi/helper-plugin';
 
 const GuidedTourModal = () => {
-  const { currentStep, isActive, guidedTourState } = useGuidedTour();
-  const [isVisible, setIsVisible] = useState(currentStep && isActive);
+  const { currentStep, guidedTourState } = useGuidedTour();
+  const [isVisible, setIsVisible] = useState(currentStep);
 
   useEffect(() => {
     if(!currentStep) {
@@ -21,10 +21,10 @@ const GuidedTourModal = () => {
     const [section, step] = currentStep.split('.');
     const isStepDone = guidedTourState[section][step];
 
-    if(!isStepDone && isActive) {
+    if(!isStepDone) {
       setIsVisible(true);
     }
-  }, [currentStep, guidedTourState, isActive]);
+  }, [currentStep, guidedTourState]);
 
   return (
     isVisible && (
