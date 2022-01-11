@@ -14,6 +14,7 @@ import LeftMenu from '../../components/LeftMenu';
 import AppLayout from '../../layouts/AppLayout';
 import { useMenu, useReleaseNotification } from '../../hooks';
 import Onboarding from './Onboarding';
+import GuidedTourModal from '../../components/GuidedTour/GuidedTourModal';
 import { createRoute } from '../../utils';
 
 const CM = lazy(() =>
@@ -90,6 +91,7 @@ const Admin = () => {
             <Route path="" component={NotFoundPage} />
           </Switch>
         </Suspense>
+        <GuidedTourModal />
         <Onboarding />
       </AppLayout>
     </DndProvider>

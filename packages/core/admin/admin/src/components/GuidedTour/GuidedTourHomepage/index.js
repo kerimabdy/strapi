@@ -9,14 +9,23 @@ import StepperHomepage from '../Stepper/Homepage/StepperHomepage';
 import layout from '../layout';
 
 const GuidedTourHomepage = () => {
-  const { guidedTourState } = useGuidedTour();
+  const { guidedTourState, setIsActive, setStep } = useGuidedTour();
   const { formatMessage } = useIntl();
+
+  const handleRedirect = (sectionName) => {
+    setIsActive(true);
+    setStep(`${sectionName}.create`)
+  }
 
   const sections = Object.entries(layout).map(([key, val]) => ({
     key,
     title: val.home.title,
     content: (
-      <LinkButton to={val.home.cta.target} endIcon={<ArrowRight />}>
+      <LinkButton
+        onClick={() => handleRedirect(key)}
+        to={val.home.cta.target}
+        endIcon={<ArrowRight />}
+      >
         {formatMessage(val.home.cta.title)}
       </LinkButton>
     ),

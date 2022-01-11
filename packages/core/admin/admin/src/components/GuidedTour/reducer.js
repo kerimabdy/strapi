@@ -2,7 +2,7 @@
 import produce from 'immer';
 
 export const initialState = {
-  currentStep: 'wdjfh',
+  currentStep: null,
   guidedTourState: {
     contentTypeBuilder: {
       create: false,
@@ -17,7 +17,7 @@ export const initialState = {
       success: false,
     },
   },
-  isActive: true,
+  isActive: false,
   isGuidedTourVisible: false,
 };
 

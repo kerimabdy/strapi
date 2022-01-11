@@ -5,7 +5,7 @@ const layout = {
     home: {
       title: {
         id: 'app.components.GuidedTour.home.CTB.title',
-        defaultMessage: 'Build the content structure',
+        defaultMessage: '🧠 Build the content structure',
       },
       cta: {
         title: {
