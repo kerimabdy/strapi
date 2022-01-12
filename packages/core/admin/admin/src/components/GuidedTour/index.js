@@ -9,11 +9,28 @@ const GuidedTour = ({ children }) => {
     initialState
   );
 
-  const setCurrentStep = step => {
-    dispatch({
-      type: 'SET_CURRENT_STEP',
-      step,
-    });
+  const setCurrentStep = value => {
+    // eslint-disable-next-line no-unused-vars
+    const [section, step] = value.split('.');
+
+    const guidedTourArray = Object.entries(guidedTourState);
+    const sectionIndex = guidedTourArray.findIndex(([key]) => key === section);
+    const sectionBefore = guidedTourArray.slice(0, sectionIndex);
+
+    let areDone;
+
+    if (sectionBefore.length > 0) {
+      areDone = sectionBefore.every(([, value]) =>
+        Object.entries(value).every(([, value]) => value)
+      );
+    }
+
+    if (sectionBefore.length === 0 || areDone) {
+      dispatch({
+        type: 'SET_CURRENT_STEP',
+        value,
+      });
+    }
   };
 
   const setStepState = (section, step, value) => {
@@ -21,7 +38,7 @@ const GuidedTour = ({ children }) => {
       type: 'SET_STEP_STATE',
       section,
       step,
-      value
+      value,
     });
   };
 
