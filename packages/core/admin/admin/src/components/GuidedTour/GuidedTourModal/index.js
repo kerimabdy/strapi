@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import at from 'lodash/at';
+import { useIntl } from 'react-intl';
 import {
   ModalLayout,
   ModalBody,
@@ -8,44 +10,64 @@ import {
 import { Typography } from '@strapi/design-system/Typography';
 import { Button } from '@strapi/design-system/Button';
 import { useGuidedTour } from '@strapi/helper-plugin';
+import layout from '../layout';
+import Content from './Content';
 
 const GuidedTourModal = () => {
-  const { currentStep, guidedTourState } = useGuidedTour();
+  const { formatMessage } = useIntl();
+  const { currentStep, guidedTourState, setCurrentStep, setStepState } = useGuidedTour();
+  const [stepContent, setStepContent] = useState();
   const [isVisible, setIsVisible] = useState(currentStep);
 
   useEffect(() => {
-    if(!currentStep) {
+    if (!currentStep) {
+      setIsVisible(false);
+
       return;
     }
 
-    const [section, step] = currentStep.split('.');
-    const isStepDone = guidedTourState[section][step];
+    const [isStepDone] = at(guidedTourState, currentStep);
 
-    if(!isStepDone) {
-      setIsVisible(true);
-    }
+    setIsVisible(!isStepDone);
   }, [currentStep, guidedTourState]);
 
-  return (
-    isVisible && (
-      <ModalLayout onClose={() => setIsVisible(prev => !prev)} labelledBy="title">
+  useEffect(() => {
+    if (currentStep) {
+      const [content] = at(layout, currentStep);
+      setStepContent(content);
+    }
+  }, [currentStep]);
+
+  const handleCTA = nextStep => {
+    setCurrentStep(nextStep);
+
+    const [section, step] = currentStep.split('.');
+    setStepState(section, step, true);
+  };
+
+  if (isVisible && stepContent) {
+    return (
+      <ModalLayout onClose={() => {}} labelledBy="title">
         <ModalHeader>
           <Typography fontWeight="bold" textColor="neutral800" as="h3" id="title">
-            Title
+            {formatMessage(stepContent.title)}
           </Typography>
         </ModalHeader>
-        <ModalBody>yolo</ModalBody>
+        <ModalBody>
+          <Content {...stepContent.content} />
+        </ModalBody>
         <ModalFooter
-          startActions={
-            <Button onClick={() => setIsVisible(prev => !prev)} variant="tertiary">
-              Cancel
+          endActions={
+            <Button onClick={() => handleCTA(stepContent.cta.nextStep)}>
+              {formatMessage(stepContent.cta.title)}
             </Button>
           }
-          endActions={<Button onClick={() => setIsVisible(prev => !prev)}>Finish</Button>}
         />
       </ModalLayout>
-    )
-  );
+    );
+  }
+
+  return null;
 };
 
 export default GuidedTourModal;

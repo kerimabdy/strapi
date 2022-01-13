@@ -4,7 +4,7 @@
  *
  */
 
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
@@ -27,11 +27,21 @@ const App = () => {
     defaultMessage: 'Content Types Builder',
   });
 
-  const { setCurrentStep } = useGuidedTour();
+  const { setCurrentStep, guidedTourState } = useGuidedTour();
+  const setCurrentStepRef = useRef(setCurrentStep);
+
+  const contentTypeBuilderSteps = guidedTourState.contentTypeBuilder;
+  // Retrieve the step we want to show to the user
+  const stepToShow = Object.entries(contentTypeBuilderSteps).find(([, value]) => value === false);
+  const [stepName] = stepToShow || [];
+
+  const stepToShowRef = useRef(stepName);
 
   useEffect(() => {
-    setCurrentStep('contentTypeBuilder.create');
-  }, [setCurrentStep]);
+    if (stepToShowRef.current) {
+      setCurrentStepRef.current(`contentTypeBuilder.${stepToShowRef.current}`);
+    }
+  }, []);
 
   return (
     <CheckPagePermissions permissions={pluginPermissions.main}>

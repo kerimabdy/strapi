@@ -2,6 +2,7 @@ import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { GuidedTourProvider } from '@strapi/helper-plugin';
 import reducer, { initialState } from './reducer';
+import { arePreviousSectionsDone } from './utils/arePreviousSectionsDone';
 
 const GuidedTour = ({ children }) => {
   const [{ currentStep, guidedTourState, isGuidedTourVisible }, dispatch] = useReducer(
@@ -10,27 +11,12 @@ const GuidedTour = ({ children }) => {
   );
 
   const setCurrentStep = value => {
-    // eslint-disable-next-line no-unused-vars
-    const [section, step] = value.split('.');
+    const toDispatch = arePreviousSectionsDone(value, guidedTourState) ? value : null;
 
-    const guidedTourArray = Object.entries(guidedTourState);
-    const sectionIndex = guidedTourArray.findIndex(([key]) => key === section);
-    const sectionBefore = guidedTourArray.slice(0, sectionIndex);
-
-    let areDone;
-
-    if (sectionBefore.length > 0) {
-      areDone = sectionBefore.every(([, value]) =>
-        Object.entries(value).every(([, value]) => value)
-      );
-    }
-
-    if (sectionBefore.length === 0 || areDone) {
-      dispatch({
-        type: 'SET_CURRENT_STEP',
-        value,
-      });
-    }
+    dispatch({
+      type: 'SET_CURRENT_STEP',
+      value: toDispatch,
+    });
   };
 
   const setStepState = (section, step, value) => {
