@@ -16,6 +16,7 @@ import DataManagerProvider from '../../components/DataManagerProvider';
 import FormModalNavigationProvider from '../../components/FormModalNavigationProvider';
 import RecursivePath from '../RecursivePath';
 import icons from './utils/icons.json';
+import updateGuidedTourStateCTB from './utils/updateGuidedTourStateCTB';
 import ContentTypeBuilderNav from '../../components/ContentTypeBuilderNav';
 
 const ListView = lazy(() => import('../ListView'));
@@ -31,23 +32,30 @@ const App = () => {
   const setCurrentStepRef = useRef(setCurrentStep);
 
   const contentTypeBuilderSteps = guidedTourState.contentTypeBuilder;
-  // Retrieve the step we want to show to the user
   const stepToShow = Object.entries(contentTypeBuilderSteps).find(([, value]) => value === false);
   const [stepName] = stepToShow || [];
 
   const stepToShowRef = useRef(stepName);
 
   useEffect(() => {
-    if (stepToShowRef.current) {
-      setCurrentStepRef.current(`contentTypeBuilder.${stepToShowRef.current}`);
+    const didAlreadyCreateAContentType = localStorage.getItem('GUIDED_TOUR_DID_CREATE_CT');
+
+    if (stepToShowRef.current === 'create') {
+      return setCurrentStepRef.current(`contentTypeBuilder.${stepToShowRef.current}`);
     }
+
+    if (stepToShowRef.current === 'success' && didAlreadyCreateAContentType) {
+      return setCurrentStepRef.current(`contentTypeBuilder.${stepToShowRef.current}`);
+    }
+
+    return setCurrentStepRef.current(null);
   }, []);
 
   return (
     <CheckPagePermissions permissions={pluginPermissions.main}>
       <Helmet title={title} />
       <FormModalNavigationProvider>
-        <DataManagerProvider allIcons={icons}>
+        <DataManagerProvider allIcons={icons} updateGuidedTourStateCTB={updateGuidedTourStateCTB}>
           <Layout sideNav={<ContentTypeBuilderNav />}>
             <Suspense fallback={<LoadingIndicatorPage />}>
               <Switch>
